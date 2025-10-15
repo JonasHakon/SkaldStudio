@@ -7,7 +7,7 @@ export default defineType({
   fields: [
     defineField({ name: 'name', title: 'Name', type: 'string', validation: r => r.required() }),
     defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'name', maxLength: 96 } }),
-    defineField({ name: 'image', title: 'Main Image', type: 'image', options: { hotspot: true } }),
+    defineField({ name: 'picture', title: 'picture', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'gallery1', title: 'Gallery 1', type: 'array', of: [{ type: 'image', options: { hotspot: true } }] }),
     defineField({ name: 'gallery2', title: 'Gallery 2', type: 'array', of: [{ type: 'image', options: { hotspot: true } }] }),
     defineField({ name: 'venue', title: 'Venue', type: 'string' }),

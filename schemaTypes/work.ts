@@ -12,17 +12,9 @@ export default defineType({
     defineField({ name: 'gallery2', title: 'Gallery 2', type: 'array', of: [{ type: 'image', options: { hotspot: true } }] }),
     defineField({ name: 'venue', title: 'Venue', type: 'string' }),
     defineField({ name: 'author', title: 'Author', type: 'string' }),
-    defineField({ name: 'description', title: 'Description', type: 'text' }),
+    defineField({ name: 'description1', title: 'Description 1', type: 'text' }),
+    defineField({ name: 'description2', title: 'Description 2', type: 'text' }),
     defineField({ name: 'date', title: 'Date', type: 'date' }),
-
-    // Relationships to People
-    defineField({ name: 'director', title: 'Director', type: 'reference', to: [{ type: 'person' }] }),
-    defineField({ name: 'actors', title: 'Actors', type: 'array', of: [{ type: 'reference', to: [{ type: 'person' }] }] }),
-    defineField({ name: 'crew', title: 'Crew', type: 'array', of: [{ type: 'reference', to: [{ type: 'person' }] }] }),
-
-    // Lists
-    defineField({ name: 'reviews', title: 'Reviews', type: 'array', of: [{ type: 'review' }] }),
-    defineField({ name: 'testimonies', title: 'Testimonies', type: 'array', of: [{ type: 'testimony' }] }),
 
     // Links
     defineField({ name: 'purchaseLink', title: 'Purchase Link', type: 'url' }),

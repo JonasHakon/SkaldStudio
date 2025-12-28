@@ -15,6 +15,14 @@ export default defineType({
     defineField({ name: 'description1', title: 'Description 1', type: 'text' }),
     defineField({ name: 'description2', title: 'Description 2', type: 'text' }),
     defineField({ name: 'date', title: 'Date', type: 'date' }),
+    defineField({ name: 'people', title: 'People', type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'person' }],
+        },
+      ],
+    }),
 
     // Links
     defineField({ name: 'purchaseLink', title: 'Purchase Link', type: 'url' }),

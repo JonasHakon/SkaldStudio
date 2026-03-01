@@ -1,4 +1,6 @@
+import React from 'react'
 import {defineType, defineField} from 'sanity'
+import {Text} from '@sanity/ui'
 import {WorkTestimonies} from '../components/WorkTestimonies'
 
 export default defineType({
@@ -22,10 +24,15 @@ export default defineType({
       title: 'Work Testimonies',
       type: 'string',
       components: {
-        input: (props) => WorkTestimonies({
-          personId: props.document._id as string,
-          personName: (props.document.name as string) || 'this person'
-        })
+        input: (props) => {
+          if (!props.document?._id) {
+            return React.createElement(Text, {muted: true}, 'Save this person first to manage work testimonies.')
+          }
+          return React.createElement(WorkTestimonies, {
+            personId: props.document._id as string,
+            personName: (props.document.name as string) || 'this person'
+          })
+        }
       },
     }),
   ],

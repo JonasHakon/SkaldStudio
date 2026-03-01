@@ -32,7 +32,7 @@ export function WorkTestimonies({personId, personName}: WorkTestimoniesProps) {
   useEffect(() => {
     if (!personId) return
 
-    const query = `*[_type == "work" && references($personId)] {
+    const query = `*[_type == "work" && $personId in people[]._ref] {
       _id,
       name,
       venue,
@@ -40,7 +40,11 @@ export function WorkTestimonies({personId, personName}: WorkTestimoniesProps) {
     }`
 
     client.fetch(query, {personId}).then((fetchedWorks) => {
+      console.log('Fetched works for person:', personId, fetchedWorks)
       setWorks(fetchedWorks)
+      setLoading(false)
+    }).catch((error) => {
+      console.error('Error fetching works:', error)
       setLoading(false)
     })
   }, [personId, client])

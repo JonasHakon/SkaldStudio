@@ -1,4 +1,5 @@
 import {defineType, defineField} from 'sanity'
+import {WorkTestimonies} from '../components/WorkTestimonies'
 
 export default defineType({
   name: 'person',
@@ -16,6 +17,17 @@ export default defineType({
     defineField({ name: 'eyeColor', title: 'Eye Color', type: 'string' }),
     defineField({ name: 'hair', title: 'Hair', type: 'string' }),
     defineField({ name: 'description', title: 'Description', type: 'text' }),
+    defineField({
+      name: 'workTestimonies',
+      title: 'Work Testimonies',
+      type: 'string',
+      components: {
+        input: (props) => WorkTestimonies({
+          personId: props.document._id as string,
+          personName: (props.document.name as string) || 'this person'
+        })
+      },
+    }),
   ],
   preview: {
     select: { title: 'name', media: 'picture' },

@@ -23,6 +23,12 @@ export default defineType({
         },
       ],
     }),
+    defineField({ 
+      name: 'testimonies', 
+      title: 'Testimonies', 
+      type: 'array',
+      of: [{ type: 'testimony' }]
+    }),
 
     // Links
     defineField({ name: 'purchaseLink', title: 'Purchase Link', type: 'url' }),

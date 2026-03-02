@@ -1,7 +1,23 @@
 import React from 'react'
-import {defineType, defineField} from 'sanity'
+import {defineType, defineField, useFormValue} from 'sanity'
 import {Text} from '@sanity/ui'
 import {WorkTestimonies} from '../components/WorkTestimonies'
+
+// Wrapper component to access document via Sanity hooks
+function WorkTestimoniesInput(props: any) {
+  // Use Sanity's useFormValue hook to get document data
+  const documentId = useFormValue(['_id']) as string | undefined
+  const personName = useFormValue(['name']) as string | undefined
+  
+  if (!documentId) {
+    return React.createElement(Text, {muted: true}, 'Save this person first to manage work testimonies.')
+  }
+  
+  return React.createElement(WorkTestimonies, {
+    personId: documentId,
+    personName: personName || 'this person'
+  })
+}
 
 export default defineType({
   name: 'person',
@@ -24,15 +40,7 @@ export default defineType({
       title: 'Work Testimonies',
       type: 'string',
       components: {
-        input: (props) => {
-          if (!props.document?._id) {
-            return React.createElement(Text, {muted: true}, 'Save this person first to manage work testimonies.')
-          }
-          return React.createElement(WorkTestimonies, {
-            personId: props.document._id as string,
-            personName: (props.document.name as string) || 'this person'
-          })
-        }
+        input: WorkTestimoniesInput
       },
     }),
   ],

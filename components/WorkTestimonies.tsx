@@ -27,10 +27,12 @@ export function WorkTestimonies({personId, personName}: WorkTestimoniesProps) {
   const [loading, setLoading] = useState(true)
   const [editingWork, setEditingWork] = useState<string | null>(null)
   const [testimonyText, setTestimonyText] = useState('')
-  const [testimonyName, setTestimonyName] = useState('')
+  const [testimonyName, setTestimonyName] = useState(personName || '')
 
   useEffect(() => {
     if (!personId) return
+
+    const cleanPersonId = personId.replace(/^drafts\./, '')
 
     const query = `*[_type == "work" && $personId in people[]._ref] {
       _id,
@@ -39,8 +41,7 @@ export function WorkTestimonies({personId, personName}: WorkTestimoniesProps) {
       testimonies
     }`
 
-    client.fetch(query, {personId}).then((fetchedWorks) => {
-      console.log('Fetched works for person:', personId, fetchedWorks)
+    client.fetch(query, {personId: cleanPersonId}).then((fetchedWorks) => {
       setWorks(fetchedWorks)
       setLoading(false)
     }).catch((error) => {
@@ -78,7 +79,7 @@ export function WorkTestimonies({personId, personName}: WorkTestimoniesProps) {
     )
 
     setTestimonyText('')
-    setTestimonyName('')
+    setTestimonyName(personName || '')
     setEditingWork(null)
   }
 
@@ -112,18 +113,13 @@ export function WorkTestimonies({personId, personName}: WorkTestimoniesProps) {
 
   return (
     <Stack space={4}>
-      <Text weight="semibold" size={2}>
-        Works featuring {personName || 'this person'}
-      </Text>
       {works.map((work) => (
         <Card key={work._id} padding={4} border radius={2}>
           <Stack space={3}>
-            <Flex justify="space-between" align="center">
-              <Box>
-                <Text weight="semibold">{work.name}</Text>
-                {work.venue && <Text muted size={1}>{work.venue}</Text>}
-              </Box>
-            </Flex>
+            <Stack space={2}>
+              <Text weight="semibold">{work.name}</Text>
+              {work.venue && <Text muted size={1}>{work.venue}</Text>}
+            </Stack>
 
             {work.testimonies && work.testimonies.length > 0 && (
               <Stack space={2}>
@@ -165,7 +161,7 @@ export function WorkTestimonies({personId, personName}: WorkTestimoniesProps) {
                   <Flex gap={2}>
                     <Button
                       text="Save Testimony"
-                      tone="positive"
+                      tone="primary"
                       onClick={() => handleAddTestimony(work._id)}
                     />
                     <Button
@@ -174,7 +170,7 @@ export function WorkTestimonies({personId, personName}: WorkTestimoniesProps) {
                       onClick={() => {
                         setEditingWork(null)
                         setTestimonyText('')
-                        setTestimonyName('')
+                        setTestimonyName(personName || '')
                       }}
                     />
                   </Flex>
@@ -185,7 +181,10 @@ export function WorkTestimonies({personId, personName}: WorkTestimoniesProps) {
                 text="Add Testimony"
                 tone="primary"
                 mode="ghost"
-                onClick={() => setEditingWork(work._id)}
+                onClick={() => {
+                  setEditingWork(work._id)
+                  setTestimonyName(personName || '')
+                }}
               />
             )}
           </Stack>
